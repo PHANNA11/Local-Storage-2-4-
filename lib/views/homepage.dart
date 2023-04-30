@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:local_database/database/connection_db.dart';
+import 'package:local_database/global/constant.dart';
 import 'package:local_database/model/product_model.dart';
 import 'package:local_database/views/add_product.dart';
 
@@ -12,6 +15,7 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
+
 // Testing
 class _HomePageState extends State<HomePage> {
   List<ProductModel> listProduct = [];
@@ -85,9 +89,54 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            child: ListTile(
-                subtitle: Text('Code :${listProduct[index].id}'),
-                title: Text(listProduct[index].name.toString())),
+            child: Container(
+              height: 120,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: listProduct[index].image!.isEmpty
+                        ? SizedBox(
+                            height: double.infinity,
+                            child: Image(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(emptyImage.toString())),
+                          )
+                        : SizedBox(
+                            height: double.infinity,
+                            child: Image(
+                              fit: BoxFit.cover,
+                              image: FileImage(
+                                File(listProduct[index].image.toString()),
+                              ),
+                            ),
+                          ),
+                  ),
+                  Expanded(
+                      flex: 2,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            listProduct[index].name.toString(),
+                            style: const TextStyle(fontSize: 26),
+                          ),
+                          Text(
+                            '\$ ${listProduct[index].price}',
+                            style: const TextStyle(fontSize: 22),
+                          ),
+                        ],
+                      ))
+                ],
+              ),
+            ),
+            // child: ListTile(
+            //     subtitle: Text('Code :${listProduct[index].id}'),
+            //     title: Text(listProduct[index].name.toString())),
           ),
         ),
       ),
