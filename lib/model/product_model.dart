@@ -5,15 +5,16 @@ class ProductModel {
   String? name;
   double? price;
   String? image;
+  String? category;
 
-  ProductModel({this.id, this.name, this.image, this.price});
+  ProductModel({this.id, this.name, this.image, this.price,this.category});
   Map<String, dynamic> toMap() {
-    return {fId!: id, fName!: name, fImage!: image, fPrice!: price};
+    return {fId!: id, fName!: name, fImage!: image, fPrice!: price,procategory!:category};
   }
 
   ProductModel.fromMap(Map<String, dynamic> res)
       : id = res[fId],
         name = res[fName],
         image = res[fImage],
-        price = res[fPrice];
+        price = res[fPrice],category=res[procategory];
 }

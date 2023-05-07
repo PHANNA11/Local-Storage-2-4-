@@ -15,7 +15,7 @@ class ConnectionDB {
       join(path, 'procducts.db'),
       onCreate: (database, version) async {
         await database.execute(
-          'CREATE TABLE $productTable($fId INTEGER PRIMARY KEY, $fName TEXT,$fImage TEXT,$fPrice REAL)',
+          'CREATE TABLE $productTable($fId INTEGER PRIMARY KEY, $fName TEXT,$fImage TEXT,$fPrice REAL,$procategory TEXT)',
         );
       },
       version: 1,

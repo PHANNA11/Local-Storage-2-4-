@@ -138,9 +138,9 @@ class _HomePageState extends State<HomePage> {
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
-                              children:const [
+                              children:[
                                 Text(
-                                  'Drink',
+                                  listProduct[index].category.toString(),
 
                                 ),
                               ],

@@ -25,13 +25,14 @@ class _AddProductState extends State<AddProduct> {
   final productPrice = TextEditingController();
   File? fileImage;
   List<String> items = ['item1', 'item2', 'item3'];
-  String selectItem = 'select';
+  String selectItem = '';
   @override
   void initState() {
     if (widget.title == 'Update Product') {
       productName.text = widget.pro!.name!;
       productPrice.text = widget.pro!.price!.toString();
       fileImage = File(widget.pro!.image.toString());
+      selectItem=widget.pro!.category.toString();
     }
     // TODO: implement initState
     super.initState();
@@ -41,8 +42,15 @@ class _AddProductState extends State<AddProduct> {
     await ConnectionDB().getCategoryList().then((value) {
       setState(() {
         categorylist = value;
+        filterStringList();
       });
     });
+  }
+  filterStringList(){
+    items=[];
+    for(var temp in categorylist){
+      items.add(temp.name.toString());
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -99,11 +107,11 @@ class _AddProductState extends State<AddProduct> {
                       'Select category',
                       style: TextStyle(fontSize: 14),
                     ),
-                    items: categorylist
-                        .map((item) => DropdownMenuItem(
+                    items: items
+                        .map((item) => DropdownMenuItem<String>(
                               value:item,
                               child: Text(
-                               item.name.toString(),
+                               item,
                                 style: const TextStyle(
                                   fontSize: 18,
                                 ),
@@ -117,10 +125,13 @@ class _AddProductState extends State<AddProduct> {
                       return null;
                     },
                     onChanged: (value) {
+                      setState(() {
+                         selectItem = value.toString();
+                      });
                       //Do something when changing the item if you want.
                     },
                     onSaved: (value) {
-                      selectItem = value.toString();
+
                     },
                     buttonStyleData: const ButtonStyleData(
                       height: 60,
@@ -195,7 +206,8 @@ class _AddProductState extends State<AddProduct> {
                               id: DateTime.now().microsecond,
                               name: productName.text,
                               price: double.parse(productPrice.text),
-                              image: fileImage == null ? '' : fileImage!.path))
+                              image: fileImage == null ? '' : fileImage!.path,
+                              category: selectItem))
                           .whenComplete(() => Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
@@ -207,7 +219,7 @@ class _AddProductState extends State<AddProduct> {
                               id: widget.pro!.id,
                               name: productName.text,
                               price: double.parse(productPrice.text),
-                              image: fileImage == null ? '' : fileImage!.path))
+                              image: fileImage == null ? '' : fileImage!.path, category: selectItem))
                           .whenComplete(() => Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
